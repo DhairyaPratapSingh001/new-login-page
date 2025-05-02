@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Password Reset</title>
+    <!-- Include Bootstrap for responsive layout and basic styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Footer Styles */
+        footer.main-footer {
+            background-color: #036;;
+            color: #fff;
+            padding: 40px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        footer .main-footer .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        footer .social-icons {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        footer .social-icons li {
+            transition: transform 0.3s ease;
+        }
+
+        footer .social-icons li:hover {
+            transform: scale(1.1);
+        }
+
+        footer .social-icons i {
+            font-size: 30px;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-icons li a:hover i {
+            color: #1abc9c;
+        }
+
+        footer .copyright {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        footer .to-top {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        footer .to-top a {
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            background-color: #3498db;
+            transition: background-color 0.3s ease;
+        }
+
+        footer .to-top a:hover {
+            background-color: #2980b9;
+        }
+
+        footer .upper-footer img {
+            max-width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        footer .menu-footer-container ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0;
+        }
+
+        footer .menu-footer-container ul li {
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        footer .menu-footer-container ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        footer .menu-footer-container ul li a:hover {
+            color: #1abc9c;
+        }
+
+        @media (max-width: 768px) {
+            footer .menu-footer-container ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+    <style>
+        /* Base body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9; /* Light gray background for neutral feel */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styling */
+        #header {
+            background-color: #003366; /* Deep blue for the header */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        #header img {
+            width: 150px;
+            height: auto;
+        }
+
+        .container {
+            max-width: 900px;
+            margin-top: 50px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .col-sm-6 {
+            background-color: #ffffff; /* White background for the form */
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control {
+            border-radius: 5px;
+            margin-bottom: 15px;
+            padding: 10px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: inline-block;
+            color: #333; /* Dark gray for labels */
+        }
+
+        /* Styling for primary action button */
+        #submitbutton {
+            background-color: #0066cc; /* Dark Blue for primary button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        #submitbutton:hover {
+            background-color: #004d99; /* Darker blue on hover */
+        }
+
+        /* Error and info messages */
+        .error-message {
+            color: #e74c3c; /* Red for error messages */
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .info-message {
+            font-size: 14px;
+            margin-top: 15px;
+            color: #007bff; /* Blue for info messages */
+        }
+
+        /* Loader (spinner) styles */
+        #waitsign {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #lanimate {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hidden elements for transitions */
+        .hidden {
+            display: none;
+        }
+
+        /* Input field styling */
+        .form-control:focus {
+            border-color: #0066cc; /* Focused border color matches the primary button */
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.5); /* Light blue focus effect */
+        }
+
+        /* Button for OTP and New Password Forms */
+        #otpentry, #newpasssubmit {
+            background-color: #28a745; /* Green for success actions */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #otpentry:hover, #newpasssubmit:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        /* Password Reset and Sign-out Buttons */
+        #resetpass, #signout {
+            background-color: #f39c12; /* Orange for warning or actions */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #resetpass:hover, #signout:hover {
+            background-color: #e67e22; /* Darker orange on hover */
+        }
+
+        /* OTP and New Password Forms */
+        #otpdiv, #newpass {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header with Logo -->
+<div id="header">
+    <img src="https://cdn-gkfnp.nitrocdn.com/aYvcwEaVlfKmHqErUYgzBgyLDSPYVCSq/assets/images/optimized/rev-6a38310/unimechaerospace.com/wp-content/uploads/2023/03/MicrosoftTeams-image-10.png" alt="Unimecha Aerospace Logo">
+    <h1 style="padding-top: 20px;" >Welcome to Unimech Aerospace</h1>
+</div>
+
+<!-- Main Content Section -->
+<div class="container">
+  <div class="row">
+  
+    <!-- Login Form Section -->
+    <div class="col-sm-6" id="loginpage">
+        <form>
+            <div id="error-message" class="error-message hidden">Please fill all required fields.</div>
+            <label for="dcode" class="form-label">Supplier Code:</label> 
+            <input type="text" id="dcode" class="form-control" maxlength="10" placeholder="Enter Supplier Code" oninput="this.value = this.value.toUpperCase()" required> 
+
+            <label for="demail" class="form-label">Email ID:</label> 
+            <input type="email" id="demail" class="form-control" maxlength="50" placeholder="Enter Email ID" required> 
+
+            <label for="dpass" class="form-label">Password:</label> 
+            <input type="password" id="dpass" class="form-control" minlength="8" maxlength="20" placeholder="Enter Password" required> 
+
+            <input type="submit" id="submitbutton" value="Sign In"> 
+            <br><br>
+            <input type="button" id="resetpass" class="hidden" value="Reset Password"> 
+            <input type="button" id="signout" value="Sign Out" class="hidden"><br><br>
+        </form> 
+     
+        <div id="otpdiv">
+            <label for="otp" class="form-label">OTP:</label>
+            <input type="text" id="otp" class="form-control" maxlength="5" placeholder="Enter OTP">
+            <input type="submit" id="otpentry" class="form-control" value="Submit OTP"> 
+        </div>
+
+        <div id="newpass">
+            <form>
+                <label for="npass" class="form-label">New Password:</label> 
+                <input type="password" id="npass" class="form-control" minlength="8" maxlength="20" placeholder="Enter New Password" required> 
+            
+                <label for="nrpass" class="form-label">Repeat Password:</label> 
+                <input type="password" id="nrpass" class="form-control" minlength="8" maxlength="20" placeholder="Repeat New Password" required> 
+            
+                <input type="submit" id="newpasssubmit" class="form-control" value="Submit New Password">
+            </form>
+        </div>
+    
+    </div>
+
+  </div>
+</div>
+<!-- Footer Section -->
+<footer class="main-footer dark bold" style="margin-top: 20px;"> 
+    <section class="upper-footer ts-contain"> 
+        <div class="wrap"> 
+            <div id="header" style="background-color: #036;">
+                <img src="https://cdn-gkfnp.nitrocdn.com/aYvcwEaVlfKmHqErUYgzBgyLDSPYVCSq/assets/images/optimized/rev-6a38310/unimechaerospace.com/wp-content/uploads/2023/03/MicrosoftTeams-image-10.png" alt="Unimecha Aerospace Logo">
+                
+            </div>
+        </div> 
+    </section> 
+    
+    <section class="lower-footer cf"> 
+        <div class="wrap"> 
+            <ul class="social-icons"> 
+                <li> 
+                    <a href="https://www.facebook.com/UnimechAerospaceManufacturing" class="social-link" target="_blank" title="Facebook"> 
+                        <i class="tsi tsi-facebook"></i> <span class="label">Facebook</span> 
+                    </a> 
+                </li> 
+                <li> 
+                    <a href="https://twitter.com/UnimechA" class="social-link" target="_blank" title="X (Twitter)"> 
+                        <i class="tsi tsi-twitter"></i> <span class="label">X (Twitter)</span> 
+                    </a> 
+                </li> 
+                <li> 
+                    <a href="https://www.instagram.com/unimech_aerospace/" class="social-link" target="_blank" title="Instagram"> 
+                        <i class="tsi tsi-instagram"></i> <span class="label">Instagram</span> 
+                    </a> 
+                </li> 
+                <li> 
+                    <a href="https://www.linkedin.com/company/unimech-aerospace" class="social-link" target="_blank" title="LinkedIn"> 
+                        <i class="tsi tsi-linkedin"></i> <span class="label">LinkedIn</span> 
+                    </a> 
+                </li> 
+            </ul> 
+
+            <div class="menu-footer-container">
+                <ul id="menu-footer" class="menu">
+                    <li><a href="https://unimechaerospace.com/">Home</a></li>
+                    <li><a href="https://unimechaerospace.com/company/">About Us</a></li>
+                    <li><a href="https://unimechaerospace.com/manufacturing-capabilities/">Manufacturing</a></li>
+                    <li><a href="https://unimechaerospace.com/careers/">Careers</a></li>
+                    <li><a href="https://unimechaerospace.com/contact-us/">Contact Us</a></li>
+                    <li><a href="https://unimechaerospace.com/blog/">Blog</a></li>
+                    <li><a href="https://unimechaerospace.com/news-media/">News & Media</a></li>
+                </ul>
+            </div> 
+
+            <p class="copyright">© 2022 Unimech Aerospace. Designed & Developed by Unimech aerospace.</p> 
+            <div class="to-top" style="margin-bottom: 28px;"> 
+                <a href="#" class="back-to-top" style="float: right;margin-top: 0px;"><i class="tsi tsi-angle-up"></i> Top</a> 
+            </div> 
+        </div> 
+    </section> 
+</footer>
+
+<!-- Loading spinner -->
+<div id="waitsign">
+    <div class="loader" id="lanimate"></div> 
+</div>
+
+<!-- Bootstrap JS and jQuery for optional functionality (like modal, popups, etc.) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Function to toggle between forms and show loader
+    document.getElementById("submitbutton").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Show loader while submitting
+        document.getElementById("waitsign").style.display = "block";
+        
+        // Simulate a network request delay
+        setTimeout(function() {
+            document.getElementById("waitsign").style.display = "none";
+            alert("Logged in successfully!");
+            // Switch to OTP form after successful login
+            document.getElementById("loginpage").style.display = "none";
+            document.getElementById("otpdiv").style.display = "block";
+        }, 2000);
+    });
+
+    document.getElementById("otpentry").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Show loader while submitting OTP
+        document.getElementById("waitsign").style.display = "block";
+        
+        // Simulate OTP verification delay
+        setTimeout(function() {
+            document.getElementById("waitsign").style.display = "none";
+            alert("OTP Verified!");
+            // Switch to new password form
+            document.getElementById("otpdiv").style.display = "none";
+            document.getElementById("newpass").style.display = "block";
+        }, 2000);
+    });
+</script>
+
+<script>
+    // Smooth scroll to top
+    $(".back-to-top").click(function() {
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        return false;
+    });
+
+    // Smooth scroll to bottom
+    $(".back-to-bottom").click(function() {
+        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+        return false;
+    });
+</script>
+</body>
+</html>
